@@ -18,6 +18,7 @@ export interface Article {
   stateId?: string
   tags: string[]
   relatedArticleIds: string[]
+  embedding?: number[]
   publishedAt: Date | null
   createdAt: Date
   updatedAt: Date

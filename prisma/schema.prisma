@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//////////////////////
+// ✅ ENUMS FIRST
+//////////////////////
+
 enum ArticleCategory {
   LAW
   AMENDMENT
@@ -23,6 +27,10 @@ enum Role {
   ADMIN
 }
 
+//////////////////////
+// ✅ MODELS
+//////////////////////
+
 model Article {
   id             String          @id @default(cuid())
   slug           String          @unique
@@ -32,15 +40,16 @@ model Article {
   body           String
   impactAnalysis String?
   stateId        String?
-  tags           String[]
+  tags           String[]        @default([])
+  embedding      Float[]         @default([])
   publishedAt    DateTime?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 
-  state        State?            @relation(fields: [stateId], references: [id])
-  relatedFrom  ArticleRelation[] @relation("ArticleRelatedFrom")
-  relatedTo    ArticleRelation[] @relation("ArticleRelatedTo")
-  bookmarks    Bookmark[]
+  state       State?            @relation(fields: [stateId], references: [id])
+  relatedFrom ArticleRelation[] @relation("ArticleRelatedFrom")
+  relatedTo   ArticleRelation[] @relation("ArticleRelatedTo")
+  bookmarks   Bookmark[]
 
   @@index([category])
   @@index([stateId])
@@ -52,7 +61,7 @@ model ArticleRelation {
   toId   String
 
   from Article @relation("ArticleRelatedFrom", fields: [fromId], references: [id], onDelete: Cascade)
-  to   Article @relation("ArticleRelatedTo",   fields: [toId],   references: [id], onDelete: Cascade)
+  to   Article @relation("ArticleRelatedTo", fields: [toId], references: [id], onDelete: Cascade)
 
   @@id([fromId, toId])
 }
@@ -64,43 +73,20 @@ model State {
   articles Article[]
 }
 
-model Law {
-  id         String      @id @default(cuid())
-  name       String
-  actNumber  String
-  year       Int
-  summary    String
-  fullText   String?
-  articleId  String      @unique
-  amendments Amendment[]
-
-  @@index([year])
-}
-
-model Amendment {
-  id          String @id @default(cuid())
-  lawId       String
-  year        Int
-  description String
-  effect      String
-
-  law Law @relation(fields: [lawId], references: [id], onDelete: Cascade)
-}
-
 model User {
-  id             String     @id @default(cuid())
-  email          String?    @unique
-  name           String?
-  image          String?
-  emailVerified  DateTime?  // ✅ REQUIRED for NextAuth
+  id            String    @id @default(cuid())
+  email         String?   @unique
+  name          String?
+  image         String?
+  emailVerified DateTime?
 
-  role           Role       @default(READER)
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  role      Role     @default(READER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  bookmarks      Bookmark[]
-  accounts       Account[]
-  sessions       Session[]
+  bookmarks Bookmark[]
+  accounts  Account[]
+  sessions  Session[]
 }
 
 model Bookmark {
