@@ -1,5 +1,27 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@/app/*": [
+        "./src/app/*"
+      ],
+      "@/presentation/*": [
+        "./src/presentation/*"
+      ],
+      "@/domain/*": [
+        "./src/domain/*"
+      ],
+      "@/application/*": [
+        "./src/application/*"
+      ],
+      "@/infrastructure/*": [
+        "./src/infrastructure/*"
+      ]
+    },
     "target": "ES2017",
     "lib": [
       "dom",
@@ -15,23 +37,17 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+    ]
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    "src/**/*",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
