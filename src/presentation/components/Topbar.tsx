@@ -1,0 +1,45 @@
+'use client'
+
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+
+type TopbarProps = {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export function Topbar({ setOpen }: TopbarProps) {
+  const [query, setQuery] = useState('')
+  const [showSearch, setShowSearch] = useState(false)
+
+  const router = useRouter()
+  const { data: session } = useSession()
+
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault()
+    if (query.trim().length > 1) {
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`)
+      setShowSearch(false)
+    }
+  }
+
+  return (
+    <header className="flex items-center gap-3 px-4 sm:px-5 border-b border-gray-100 bg-white h-14 shrink-0">
+      <div className="flex items-center gap-2">
+
+        {/* toggle sidebar */}
+        <button
+          onClick={() => setOpen(true)}
+          className="lg:hidden p-2 -ml-1 text-gray-600"
+        >
+          ☰
+        </button>
+
+        <Link href="/" className="text-sm sm:text-[15px] font-medium">
+          Unscripted <span className="text-saffron-600">India</span>
+        </Link>
+      </div>
+    </header>
+  )
+}
