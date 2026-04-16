@@ -31,4 +31,6 @@ export interface ArticleRepository {
   searchByText(query: string): Promise<Article[]>
   // ✅ ADD THIS
   findRelated(articleId: string, limit: number): Promise<Article[]>
+    // ✅ ADD THIS
+  create(article: Partial<Article>): Promise<Article>
 }

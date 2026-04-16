@@ -1,6 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 import { Article } from '@/domain/entities/Article'
-import { ArticleRepository } from '@/domain/repositories/ArticleRepository'
+import {
+  ArticleRepository,
+  ArticleFilters,
+  PaginationOptions,
+  PaginatedResult,
+} from '@/domain/repositories/ArticleRepository'
 
 export class PrismaArticleRepository implements ArticleRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -22,6 +27,26 @@ export class PrismaArticleRepository implements ArticleRepository {
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,
     }
+  }
+
+  // ✅ FIX 1: ADD CREATE METHOD
+  async create(data: Partial<Article>): Promise<Article> {
+    const record = await this.prisma.article.create({
+      data: {
+        slug: data.slug!,
+        title: data.title!,
+        category: data.category!,
+        summary: data.summary,
+        body: data.body!,
+        impactAnalysis: data.impactAnalysis,
+        stateId: data.stateId,
+        tags: data.tags ?? [],
+        publishedAt: data.publishedAt ?? null,
+      },
+      include: { relatedFrom: true },
+    })
+
+    return this.toDomain(record)
   }
 
   async getById(id: string): Promise<Article | null> {
@@ -51,18 +76,21 @@ export class PrismaArticleRepository implements ArticleRepository {
     return records.map(this.toDomain.bind(this))
   }
 
+  // ✅ FIX 2: STRONG TYPING
   async list(
-    filters: any,
-    { page, limit }: { page: number; limit: number }
-  ) {
+    filters: ArticleFilters,
+    { page, limit }: PaginationOptions
+  ): Promise<PaginatedResult<Article>> {
     const where: any = {}
 
-    if (filters?.category) where.category = filters.category
-    if (filters?.stateId) where.stateId = filters.stateId
-    if (filters?.published !== undefined) {
+    if (filters.category) where.category = filters.category
+    if (filters.stateId) where.stateId = filters.stateId
+
+    if (filters.published !== undefined) {
       where.publishedAt = filters.published ? { not: null } : null
     }
-    if (filters?.tags?.length) {
+
+    if (filters.tags?.length) {
       where.tags = { hasSome: filters.tags }
     }
 
@@ -103,7 +131,6 @@ export class PrismaArticleRepository implements ArticleRepository {
     return records.map(this.toDomain.bind(this))
   }
 
-  // ✅ NEW: Find Related Articles
   async findRelated(articleId: string, limit: number): Promise<Article[]> {
     const current = await this.prisma.article.findUnique({
       where: { id: articleId },
@@ -114,12 +141,8 @@ export class PrismaArticleRepository implements ArticleRepository {
     const records = await this.prisma.article.findMany({
       where: {
         NOT: { id: articleId },
-
         OR: [
-          // Same category
           { category: current.category },
-
-          // Shared tags
           current.tags?.length
             ? { tags: { hasSome: current.tags } }
             : undefined,
