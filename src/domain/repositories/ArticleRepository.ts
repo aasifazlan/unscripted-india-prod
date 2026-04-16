@@ -3,6 +3,8 @@ import { Article } from '@/domain/entities/Article'
 export type ArticleFilters = {
   category?: string
   published?: boolean
+  stateId?: string        // ✅ add this
+  tags?: string[]         // ✅ add this
 }
 
 export type PaginationOptions = {
