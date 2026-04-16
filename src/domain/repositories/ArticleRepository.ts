@@ -3,8 +3,8 @@ import { Article } from '@/domain/entities/Article'
 export type ArticleFilters = {
   category?: string
   published?: boolean
-  stateId?: string        // ✅ add this
-  tags?: string[]         // ✅ add this
+  stateId?: string
+  tags?: string[]
 }
 
 export type PaginationOptions = {
@@ -29,8 +29,14 @@ export interface ArticleRepository {
   getBySlug(slug: string): Promise<Article | null>
   getByIds(ids: string[]): Promise<Article[]>
   searchByText(query: string): Promise<Article[]>
-  // ✅ ADD THIS
   findRelated(articleId: string, limit: number): Promise<Article[]>
-    // ✅ ADD THIS
+
+  // ✅ create article
   create(article: Partial<Article>): Promise<Article>
+
+  // ✅ update article
+  update(
+    id: string,
+    article: Partial<Article>
+  ): Promise<Article>
 }

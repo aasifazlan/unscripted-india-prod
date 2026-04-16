@@ -29,7 +29,6 @@ export class PrismaArticleRepository implements ArticleRepository {
     }
   }
 
-  // ✅ FIX 1: ADD CREATE METHOD
   async create(data: Partial<Article>): Promise<Article> {
     const record = await this.prisma.article.create({
       data: {
@@ -42,6 +41,23 @@ export class PrismaArticleRepository implements ArticleRepository {
         stateId: data.stateId,
         tags: data.tags ?? [],
         publishedAt: data.publishedAt ?? null,
+      },
+      include: { relatedFrom: true },
+    })
+
+    return this.toDomain(record)
+  }
+
+  // ✅ NEW
+  async update(id: string, data: Partial<Article>): Promise<Article> {
+    const record = await this.prisma.article.update({
+      where: { id },
+      data: {
+        summary: data.summary,
+        impactAnalysis: data.impactAnalysis,
+        stateId: data.stateId,
+        tags: data.tags,
+        publishedAt: data.publishedAt,
       },
       include: { relatedFrom: true },
     })
@@ -76,7 +92,6 @@ export class PrismaArticleRepository implements ArticleRepository {
     return records.map(this.toDomain.bind(this))
   }
 
-  // ✅ FIX 2: STRONG TYPING
   async list(
     filters: ArticleFilters,
     { page, limit }: PaginationOptions
