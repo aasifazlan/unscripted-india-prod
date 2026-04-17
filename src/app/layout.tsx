@@ -4,7 +4,10 @@ import './globals.css'
 import { SessionProvider } from '@/presentation/components/SessionProvider'
 import { ClientLayout } from '@/presentation/components/ClientLayout'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
 
 export const metadata: Metadata = {
   title: 'Unscripted India',
@@ -16,10 +19,14 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="bg-gray-50 text-gray-900 antialiased">
+      <body className="h-screen bg-gray-50 text-gray-900 antialiased overflow-x-hidden">
         <SessionProvider>
           <ClientLayout>{children}</ClientLayout>
         </SessionProvider>

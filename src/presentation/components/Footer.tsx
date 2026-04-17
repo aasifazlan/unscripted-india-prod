@@ -31,80 +31,125 @@ const FOOTER_LINKS = {
 export function Footer() {
   return (
     <footer className="border-t border-gray-100 bg-white mt-auto">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-          
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+
           {/* Brand */}
-          <div>
-            <Link href="/" className="text-lg font-semibold tracking-tight text-gray-900">
+          <div className="text-center lg:text-left">
+            <Link href="/" className="text-lg font-semibold text-gray-900">
               Unscripted <span className="text-saffron-600">India</span>
             </Link>
 
-            <p className="mt-3 text-sm text-gray-500 leading-relaxed max-w-sm">
-              Indian laws, policies, and civic life — explained clearly and without jargon.
+            <p className="mt-3 text-sm text-gray-500 max-w-xs mx-auto lg:mx-0">
+              Indian laws, policies, and civic life — explained clearly.
             </p>
 
-            {/* Social */}
-            <div className="flex gap-3 mt-4">
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter / X"
-                className="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:border-gray-300 transition-colors"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            {/* Social Icons */}
+            <div className="flex gap-3 mt-6 justify-center lg:justify-start">
+
+              {/* Twitter */}
+              <a href="https://x.com/UnscriptedInd" target="_blank" rel="noopener noreferrer"
+                className="w-9 h-9 flex items-center justify-center border rounded-lg text-gray-400 hover:text-blue-500 transition">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                  <path d="M22 5.9c-.7.3-1.5.5-2.3.6.8-.5 1.4-1.2 1.7-2.1-.8.5-1.7.8-2.6 1A4.1 4.1 0 0016 4c-2.3 0-4.1 1.9-4.1 4.2 0 .3 0 .7.1 1C8 9 5.1 7.4 3.1 5c-.3.6-.5 1.2-.5 2 0 1.4.7 2.6 1.8 3.3-.6 0-1.2-.2-1.7-.5 0 2 1.4 3.7 3.3 4.1-.3.1-.7.1-1 .1-.3 0-.5 0-.8-.1.5 1.7 2.1 2.9 3.9 2.9A8.3 8.3 0 012 19.5 11.7 11.7 0 008.3 21c7.6 0 11.8-6.3 11.8-11.8v-.5c.8-.6 1.4-1.3 1.9-2.1z"/>
                 </svg>
               </a>
 
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:border-gray-300 transition-colors"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+              {/* GitHub */}
+              {/* <a href="https://github.com" target="_blank"
+                className="w-9 h-9 flex items-center justify-center border rounded-lg text-gray-400 hover:text-gray-800 transition">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                  <path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.8 2 .8 2 .9 1.5 2.5 1.1 3.1.9.1-.7.4-1.1.7-1.4-2.2-.3-4.5-1.1-4.5-5 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1.9-.2 1.8-.3 2.7-.3s1.8.1 2.7.3c2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.6 1.1 2.7 0 3.9-2.3 4.7-4.5 5 .4.3.8 1 .8 2v3c0 .3.2.6.7.5A10.2 10.2 0 0022 12.2C22 6.6 17.5 2 12 2z"/>
+                </svg>
+              </a> */}
+
+              {/* Instagram */}
+              <a href="https://www.instagram.com/unscripted.india/?hl=en" className="w-9 h-9 flex items-center justify-center border rounded-lg text-gray-400 hover:text-pink-500 transition">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                  <path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 5.5A4.5 4.5 0 1016.5 12 4.5 4.5 0 0012 7.5zm6.5-.9a1 1 0 11-1-1 1 1 0 011 1z"/>
                 </svg>
               </a>
+
+              {/* YouTube */}
+              {/* <a href="#" className="w-9 h-9 flex items-center justify-center border rounded-lg text-gray-400 hover:text-red-500 transition">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                  <path d="M21.8 8s-.2-1.5-.8-2.2c-.8-.9-1.7-.9-2.1-1C15.9 4.5 12 4.5 12 4.5h0s-3.9 0-6 .3c-.4.1-1.3.1-2.1 1C3.3 6.5 3.2 8 3.2 8S3 9.8 3 11.6v.8c0 1.8.2 3.6.2 3.6s.2 1.5.8 2.2c.8.9 1.9.9 2.4 1 1.7.2 5.6.3 5.6.3s3.9 0 6-.3c.4-.1 1.3-.1 2.1-1 .6-.7.8-2.2.8-2.2s.2-1.8.2-3.6v-.8c0-1.8-.2-3.6-.2-3.6zM9.8 14.5V9.5l4.8 2.5-4.8 2.5z"/>
+                </svg>
+              </a> */}
+
             </div>
           </div>
 
-          {/* Links */}
-          {Object.entries(FOOTER_LINKS).map(([section, links]) => (
-            <div key={section}>
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-3">
-                {section}
-              </p>
-              <ul className="space-y-2">
-                {links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-gray-500 hover:text-gray-800 transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* RIGHT SIDE */}
+          {/* RIGHT SIDE */}
+          <div className="lg:col-span-3 flex flex-col items-center">
+
+  {/* Explore + Platform (centered group) */}
+  <div className="grid grid-cols-2 gap-10 w-full max-w-md text-center sm:text-left">
+    
+    {/* Explore */}
+    <div>
+      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+        Explore
+      </p>
+      <ul className="space-y-2">
+        {FOOTER_LINKS.Explore.map((link) => (
+          <li key={link.href}>
+            <Link href={link.href} className="text-sm text-gray-500 hover:text-gray-900 transition">
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Platform */}
+    <div>
+      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+        Platform
+      </p>
+      <ul className="space-y-2">
+        {FOOTER_LINKS.Platform.map((link) => (
+          <li key={link.href}>
+            <Link href={link.href} className="text-sm text-gray-500 hover:text-gray-900 transition">
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+  </div>
+
+  {/* States (centered properly) */}
+  {/* <div className="mt-10 w-full text-center">
+    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+      States
+    </p>
+
+    <ul className="flex flex-wrap justify-center gap-x-4 gap-y-2 max-w-md mx-auto">
+      {FOOTER_LINKS.States.map((link) => (
+        <li key={link.href}>
+          <Link href={link.href} className="text-sm text-gray-500 hover:text-gray-900 transition">
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div> */}
+
+          </div>
         </div>
 
         {/* Bottom */}
-        <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          <p className="text-xs text-gray-400 max-w-md">
-            © {new Date().getFullYear()} Unscripted India. Content is for informational purposes only and does not constitute legal advice.
+        <div className="mt-10 pt-6 border-t border-gray-100 flex flex-col items-center gap-3 text-center">
+          <p className="text-xs text-gray-400 max-w-lg">
+            © {new Date().getFullYear()} Unscripted India. Content is for informational purposes only.
           </p>
-          <p className="text-xs text-gray-400">
-            Made in India 🇮🇳
-          </p>
+          <p className="text-xs text-gray-400">Made in India 🇮🇳</p>
         </div>
+
       </div>
     </footer>
   )

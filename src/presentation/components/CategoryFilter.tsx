@@ -23,7 +23,7 @@ export function CategoryFilter({ active }: Props) {
         
         {/* All */}
         <Link
-          href="/"
+          href="/#articles"
           className={`whitespace-nowrap text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border transition-colors ${
             !active
               ? 'bg-saffron-50 border-saffron-300 text-saffron-700'
@@ -38,7 +38,7 @@ export function CategoryFilter({ active }: Props) {
           ([value, label]) => (
             <Link
               key={value}
-              href={`/?category=${value}`}
+              href={`/?category=${value}#articles`}
               className={`whitespace-nowrap text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border transition-colors ${
                 active === value
                   ? 'bg-saffron-50 border-saffron-300 text-saffron-700'

@@ -1,6 +1,7 @@
 import { listArticles } from '@/infrastructure/container'
 import { ArticleCard } from '@/presentation/components/ArticleCard'
 import { CategoryFilter } from '@/presentation/components/CategoryFilter'
+import HeroSection from '@/presentation/components/HeroSection'
 
 export const revalidate = 60
 
@@ -20,34 +21,30 @@ export default async function HomePage({
   )
 
   return (
-    <div className="px-8 py-8 max-w-6xl mx-auto">
-      {/* Stats row */}
-      <div className="grid grid-cols-3 gap-3 mb-8">
-        {[
-          { label: 'Total articles', value: '1,284' },
-          { label: 'Laws covered', value: '342' },
-          { label: 'States indexed', value: '28' },
-        ].map((s) => (
-          <div key={s.label} className="bg-gray-100 rounded-lg px-4 py-3">
-            <p className="text-xs text-gray-500 mb-1">{s.label}</p>
-            <p className="text-2xl font-medium text-gray-900">{s.value}</p>
-          </div>
-        ))}
-      </div>
+    <div className="px-6 md:px-8 py-8 max-w-6xl mx-auto">
+      
+      {/* 🔥 Hero Section */}
+      <HeroSection />
 
       {/* Filters */}
-      <CategoryFilter active={category} />
+      <div id="articles">
+        <CategoryFilter active={category} />
+      </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
         {result.data.map((article, i) => (
-          <ArticleCard key={article.id} article={article} featured={i === 0} />
+          <ArticleCard
+            key={article.id}
+            article={article}
+            featured={i === 0}
+          />
         ))}
       </div>
 
       {/* Pagination */}
       {result.totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-10">
+        <div className="flex justify-center gap-2 mt-12 flex-wrap">
           {Array.from({ length: result.totalPages }, (_, i) => i + 1).map((p) => (
             <a
               key={p}
@@ -63,6 +60,7 @@ export default async function HomePage({
           ))}
         </div>
       )}
+
     </div>
   )
 }
