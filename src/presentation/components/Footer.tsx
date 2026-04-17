@@ -130,7 +130,7 @@ export function Footer() {
           </p>
 
           <p className="text-xs text-gray-400">
-            Contact: contact@unscriptedindia.in
+            Contact: contact@unscriptedindia.org
           </p>
 
           <p className="text-xs text-gray-400">
