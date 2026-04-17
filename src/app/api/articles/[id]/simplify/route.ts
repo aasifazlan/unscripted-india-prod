@@ -3,10 +3,10 @@ import { simplifyArticle } from '@/infrastructure/container'
 
 export async function POST(
   _req: NextRequest,
-  context: { params: Record<string, string> } // ✅ SAFE TYPE
+  context: any // ✅ IMPORTANT: no strict typing here
 ) {
   try {
-    const id = context.params.id
+    const id = context.params?.id
 
     if (!id) {
       return NextResponse.json(
