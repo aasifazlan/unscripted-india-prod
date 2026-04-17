@@ -3,21 +3,19 @@ import { simplifyArticle } from '@/infrastructure/container'
 
 export async function POST(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } } // ✅ FIXED
 ) {
   try {
     const { id } = params
 
-    const raw = await simplifyArticle.execute(id)
+    console.log('🔥 Simplify:', id)
 
-    // normalize any leftover junk (safety net)
-    const cleaned = raw
-      .replace(/\*\*/g, '')       // remove **
-      .replace(/^\*\s*/gm, '')    // remove * bullets
-      .trim()
+    const simplified = await simplifyArticle.execute(id)
 
-    return NextResponse.json({ simplified: cleaned })
+    return NextResponse.json({ simplified })
   } catch (err: any) {
+    console.error('❌ ERROR:', err.message)
+
     return NextResponse.json(
       { error: err.message },
       { status: 404 }
