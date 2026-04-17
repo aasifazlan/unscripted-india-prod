@@ -64,9 +64,29 @@ export function SimplifyButton({ articleId }: Props) {
           <p className="text-xs font-medium text-blue-600 uppercase tracking-wider mb-2">
             Simple explanation
           </p>
-          <p className="text-sm sm:text-[15px] text-gray-700 leading-relaxed whitespace-pre-line">
-            {simplified}
-          </p>
+          <div className="space-y-3">
+  {simplified.split('\n').map((line, i) => {
+    if (!line.trim()) return null
+
+    const [title, ...rest] = line.split(':')
+    const description = rest.join(':').trim()
+
+    if (!description) {
+      return (
+        <p key={i} className="text-sm text-gray-700">
+          {line}
+        </p>
+      )
+    }
+
+    return (
+      <p key={i} className="text-sm sm:text-[15px] text-gray-700 leading-relaxed">
+        <span className="font-semibold text-gray-900">{title}:</span>{' '}
+        {description}
+      </p>
+    )
+  })}
+          </div>
         </div>
       )}
     </div>

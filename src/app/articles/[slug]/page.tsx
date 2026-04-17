@@ -14,16 +14,11 @@ type Props = {
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params
 
-  if (!slug) {
-    return { title: 'Not found' }
-  }
+  if (!slug) return { title: 'Not found' }
 
   try {
     const article = await getArticle.executeBySlug(slug)
-
-    if (!article) {
-      return { title: 'Not found' }
-    }
+    if (!article) return { title: 'Not found' }
 
     return {
       title: `${article.title} — Unscripted India`,
@@ -38,30 +33,25 @@ export async function generateMetadata({ params }: Props) {
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params
 
-  if (!slug) {
-    console.error('❌ Missing slug')
-    notFound()
-  }
+  if (!slug) notFound()
 
   let article
   try {
     article = await getArticle.executeBySlug(slug)
-  } catch (err) {
-    console.error('❌ Fetch failed:', err)
+  } catch {
     notFound()
   }
 
-  if (!article) {
-    notFound()
-  }
+  if (!article) notFound()
 
   const badgeClass = `badge badge-${article.category.toLowerCase()}`
 
   return (
-    <div className="flex">
+    <div className="flex flex-col lg:flex-row gap-6">
+
       {/* Main Content */}
-      <main className="flex-1 min-w-0 px-8 py-8 max-w-3xl">
-        
+      <main className="w-full lg:w-3/4 min-w-0 px-4 sm:px-6 lg:px-8 py-8">
+
         {/* Breadcrumb */}
         <p className="text-xs text-gray-400 mb-4">
           <a href="/" className="hover:text-gray-600">Articles</a>
@@ -111,9 +101,15 @@ export default async function ArticlePage({ params }: Props) {
         {/* Action */}
         <SimplifyButton articleId={article.id} />
 
-        {/* Body */}
+        {/* Article Body */}
         <article
-          className="mt-8 prose prose-gray prose-sm max-w-none"
+          className="
+            mt-8 prose prose-sm max-w-none
+            prose-headings:text-gray-900
+            prose-p:text-gray-700
+            prose-strong:text-gray-900
+            prose-a:text-blue-600
+          "
           dangerouslySetInnerHTML={{
             __html: article.body.replace(/\n/g, '<br/>'),
           }}
@@ -130,12 +126,27 @@ export default async function ArticlePage({ params }: Props) {
             </p>
           </section>
         )}
+
+        {/* ✅ Mobile Related Articles */}
+        <div className="mt-10 lg:hidden">
+          <RelatedArticles articleId={article.id} />
+        </div>
+
       </main>
 
-      {/* Sidebar */}
-      <aside className="w-60 shrink-0 border-l px-5 py-8 hidden lg:block">
-        <RelatedArticles articleId={article.id} />
+      {/* ✅ Desktop Sidebar (Scrollable) */}
+      <aside className="hidden lg:block w-1/4 border-l px-5 py-8">
+        
+        <div className="sticky top-20 h-[calc(100vh-5rem)]">
+          
+          <div className="h-full overflow-y-auto pr-2">
+            <RelatedArticles articleId={article.id} />
+          </div>
+
+        </div>
+
       </aside>
+
     </div>
   )
 }

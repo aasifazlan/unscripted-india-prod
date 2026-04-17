@@ -3,19 +3,24 @@ import { simplifyArticle } from '@/infrastructure/container'
 
 export async function POST(
   _req: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await context.params
+    const { id } = params
 
-    console.log("🔥 Simplify:", id)
+    const raw = await simplifyArticle.execute(id)
 
-    const simplified = await simplifyArticle.execute(id)
+    // normalize any leftover junk (safety net)
+    const cleaned = raw
+      .replace(/\*\*/g, '')       // remove **
+      .replace(/^\*\s*/gm, '')    // remove * bullets
+      .trim()
 
-    return NextResponse.json({ simplified })
+    return NextResponse.json({ simplified: cleaned })
   } catch (err: any) {
-    console.log("❌ ERROR:", err.message)
-
-    return NextResponse.json({ error: err.message }, { status: 404 })
+    return NextResponse.json(
+      { error: err.message },
+      { status: 404 }
+    )
   }
 }
