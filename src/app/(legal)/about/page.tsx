@@ -1,11 +1,15 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, Transition } from 'framer-motion'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
   animate: { opacity: 1, y: 0 },
-  transition: { delay, duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  transition: {
+    delay,
+    duration: 0.55,
+    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  } satisfies Transition,
 })
 
 const PILLARS = [
