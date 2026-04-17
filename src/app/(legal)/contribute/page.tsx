@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 
 const HOW = [
   { num: '01', title: 'Write & Research', desc: 'Author simplified summaries of laws, government schemes, and constitutional amendments.' },
@@ -16,7 +17,56 @@ const GUIDELINES = [
   { icon: '🔗', text: 'Link or cite primary sources — Acts, Gazette notifications, official reports.' },
 ]
 
+const ROLES = [
+  'Researcher',
+  'Writer / Editor',
+  'Student',
+  'Legal / Policy Professional',
+  'Journalist',
+  'Other',
+]
+
+type FormState = 'idle' | 'submitting' | 'success' | 'error'
+
 export default function ContributePage() {
+  const [formState, setFormState] = useState<FormState>('idle')
+  const [fields, setFields] = useState({ name: '', email: '', role: '', message: '' })
+  const [errors, setErrors] = useState<Partial<typeof fields>>({})
+
+  function validate() {
+    const e: Partial<typeof fields> = {}
+    if (!fields.name.trim()) e.name = 'Name is required.'
+    if (!fields.email.trim()) e.email = 'Email is required.'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) e.email = 'Enter a valid email.'
+    if (!fields.message.trim()) e.message = 'Please tell us how you want to contribute.'
+    return e
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    const errs = validate()
+    if (Object.keys(errs).length) { setErrors(errs); return }
+    setErrors({})
+    setFormState('submitting')
+
+    try {
+      const res = await fetch('/api/contribute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fields),
+      })
+      if (!res.ok) throw new Error('Server error')
+      setFormState('success')
+    } catch {
+      setFormState('error')
+    }
+  }
+
+  function handleChange(key: keyof typeof fields, value: string) {
+    setFields(f => ({ ...f, [key]: value }))
+    if (errors[key]) setErrors(e => ({ ...e, [key]: undefined }))
+  }
+
   return (
     <main className="min-h-screen bg-white">
 
@@ -132,28 +182,150 @@ export default function ContributePage() {
         </div>
       </section>
 
-      {/* ── CTA ────────────────────────────────────────────────────── */}
+      {/* ── CTA / Contact Form ─────────────────────────────────────── */}
       <section className="mx-auto max-w-4xl px-6 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative overflow-hidden rounded-3xl bg-gray-900 px-10 py-12 text-white md:px-14"
+          className="relative overflow-hidden rounded-3xl bg-gray-900 px-8 py-12 text-white md:px-12"
         >
+          {/* Background glow */}
           <div className="pointer-events-none absolute -top-12 -right-12 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
-          <p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-blue-400">
-            Ready to start?
-          </p>
-          <h2 className="mb-3 text-2xl font-bold">Get in touch with us</h2>
-          <p className="mb-5 text-gray-400">
-            Drop us a note and our editorial team will get back to you within 48 hours.
-          </p>
-          <a
-            href="mailto:contribute@unscriptedindia.in"
-            className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-100"
-          >
-            contribute@unscriptedindia.org →
-          </a>
+          <div className="pointer-events-none absolute -bottom-16 left-8 h-40 w-40 rounded-full bg-indigo-500/10 blur-3xl" />
+
+          <div className="relative">
+            <p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-blue-400">
+              Ready to start?
+            </p>
+            <h2 className="mb-1 text-2xl font-bold">Get in touch with us</h2>
+            <p className="mb-8 text-sm text-gray-400">
+              Our editorial team will get back to you within 48 hours.
+            </p>
+
+            {/* ── Error banner ── */}
+            {formState === 'error' && (
+              <div className="mb-5 flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                <span>⚠️</span>
+                <span>Something went wrong. Please try again or email <a href="mailto:contribute@unscriptedindia.in" className="underline">contribute@unscriptedindia.in</a></span>
+              </div>
+            )}
+
+            {/* ── Success state ── */}
+            {formState === 'success' ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-7 py-8"
+              >
+                <span className="text-3xl">🎉</span>
+                <h3 className="text-lg font-semibold text-white">Thanks for reaching out!</h3>
+                <p className="text-sm text-gray-400">
+                  We've received your message and will be in touch within 48 hours.
+                </p>
+              </motion.div>
+            ) : (
+              /* ── Form ── */
+              <form onSubmit={handleSubmit} noValidate className="grid gap-5 sm:grid-cols-2">
+
+                {/* Name */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                    Full Name <span className="text-blue-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Priya Sharma"
+                    value={fields.name}
+                    onChange={e => handleChange('name', e.target.value)}
+                    className={`rounded-xl border bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition focus:ring-2 focus:ring-blue-500/60 ${
+                      errors.name ? 'border-red-500/70' : 'border-white/10 focus:border-blue-500/50'
+                    }`}
+                  />
+                  {errors.name && <p className="text-[11px] text-red-400">{errors.name}</p>}
+                </div>
+
+                {/* Email */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                    Email <span className="text-blue-400">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="priya@example.com"
+                    value={fields.email}
+                    onChange={e => handleChange('email', e.target.value)}
+                    className={`rounded-xl border bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition focus:ring-2 focus:ring-blue-500/60 ${
+                      errors.email ? 'border-red-500/70' : 'border-white/10 focus:border-blue-500/50'
+                    }`}
+                  />
+                  {errors.email && <p className="text-[11px] text-red-400">{errors.email}</p>}
+                </div>
+
+                {/* Role */}
+                <div className="flex flex-col gap-1.5 sm:col-span-2">
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                    I am a…
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {ROLES.map(role => (
+                      <button
+                        key={role}
+                        type="button"
+                        onClick={() => handleChange('role', role)}
+                        className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
+                          fields.role === role
+                            ? 'border-blue-500 bg-blue-500/20 text-blue-300'
+                            : 'border-white/10 bg-white/5 text-gray-400 hover:border-white/20 hover:text-white'
+                        }`}
+                      >
+                        {role}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Message */}
+                <div className="flex flex-col gap-1.5 sm:col-span-2">
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                    How do you want to contribute? <span className="text-blue-400">*</span>
+                  </label>
+                  <textarea
+                    rows={4}
+                    placeholder="Tell us what topics you're interested in, your background, or ideas you'd like to work on…"
+                    value={fields.message}
+                    onChange={e => handleChange('message', e.target.value)}
+                    className={`resize-none rounded-xl border bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition focus:ring-2 focus:ring-blue-500/60 ${
+                      errors.message ? 'border-red-500/70' : 'border-white/10 focus:border-blue-500/50'
+                    }`}
+                  />
+                  {errors.message && <p className="text-[11px] text-red-400">{errors.message}</p>}
+                </div>
+
+                {/* Submit */}
+                <div className="sm:col-span-2">
+                  <button
+                    type="submit"
+                    disabled={formState === 'submitting'}
+                    className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 disabled:opacity-60"
+                  >
+                    {formState === 'submitting' ? (
+                      <>
+                        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                        </svg>
+                        Sending…
+                      </>
+                    ) : (
+                      <>Send message →</>
+                    )}
+                  </button>
+                </div>
+
+              </form>
+            )}
+          </div>
         </motion.div>
       </section>
 
