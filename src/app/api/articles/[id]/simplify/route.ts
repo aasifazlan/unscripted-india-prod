@@ -3,10 +3,17 @@ import { simplifyArticle } from '@/infrastructure/container'
 
 export async function POST(
   _req: NextRequest,
-  { params }: { params: { id: string } } // ✅ FIXED
+  context: { params: Record<string, string> } // ✅ SAFE TYPE
 ) {
   try {
-    const { id } = params
+    const id = context.params.id
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Missing article id' },
+        { status: 400 }
+      )
+    }
 
     console.log('🔥 Simplify:', id)
 
@@ -18,7 +25,7 @@ export async function POST(
 
     return NextResponse.json(
       { error: err.message },
-      { status: 404 }
+      { status: 500 }
     )
   }
 }
