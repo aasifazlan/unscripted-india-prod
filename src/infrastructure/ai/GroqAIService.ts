@@ -56,12 +56,25 @@ export class GroqAIService implements AIService {
     )
   }
 
-  async simplify(text: string): Promise<string> {
-    return this.chat(
-      'Explain in simple bullet points for a student.',
-      text
-    )
-  }
+async simplify(text: string): Promise<string> {
+  return this.chat(
+    `Explain the following in very simple terms for a beginner.
+
+Rules:
+- Do NOT use bullet points (*, -, etc.)
+- Do NOT use markdown like ** or lists
+- Write each point in this format:
+Title: explanation
+- Keep it clean, readable, and structured
+- Max 6-8 points
+
+Example:
+What is it: Explanation...
+Who benefits: Explanation...
+`,
+    text
+  )
+}
 
   async analyzeImpact(text: string): Promise<string> {
     return this.chat(
