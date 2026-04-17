@@ -1,42 +1,68 @@
 'use client'
 
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
 import { Footer } from './Footer'
 
-export function ClientLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Top Navigation */}
-      <Topbar setOpen={setOpen} />
+    <div className="flex flex-col min-h-screen">
 
-      {/* Main Layout */}
-      <div className="flex flex-1 overflow-hidden">
-        
-        {/* Sidebar (independent scroll) */}
-        <aside className="hidden md:block h-full w-64 overflow-y-auto border-r bg-white">
-          <Sidebar open={open} setOpen={setOpen} />
+      {/* Topbar */}
+      <div className="relative z-40">
+        <Topbar setOpen={setOpen} />
+      </div>
+
+      {/* Layout */}
+      <div className="flex flex-1 min-h-0">
+
+        {/* Desktop Sidebar */}
+        <aside className="hidden md:block w-64 border-r bg-white h-screen overflow-y-auto">
+          <Sidebar setOpen={setOpen} />
         </aside>
 
-        {/* Main Content (independent scroll) */}
-        <main className="flex-1 h-full overflow-y-auto">
+        {/* Main */}
+        <main className="flex-1 overflow-y-auto">
           <div className="min-h-full flex flex-col">
-            <div className="flex-1">
-              {children}
-            </div>
-
+            <div className="flex-1">{children}</div>
             <Footer />
           </div>
         </main>
 
       </div>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-x-0 bottom-0 top-14 z-40 bg-black/20 backdrop-blur-sm md:hidden"
+              onClick={() => setOpen(false)}
+            />
+
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', stiffness: 240, damping: 26 }}
+              className="fixed top-14 left-0 h-[calc(100%-56px)] w-64 bg-white shadow-xl z-50 md:hidden overflow-y-auto"
+            >
+              <Sidebar setOpen={setOpen} />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
     </div>
   )
 }

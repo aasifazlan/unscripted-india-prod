@@ -26,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="h-screen bg-gray-50 text-gray-900 antialiased overflow-x-hidden">
+      <body className="min-h-screen bg-gray-50 text-gray-900 antialiased overflow-x-hidden">
         <SessionProvider>
           <ClientLayout>{children}</ClientLayout>
         </SessionProvider>

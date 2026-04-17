@@ -1,5 +1,6 @@
 'use client'
-import Link from 'next/link'
+
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { ArticleCategory } from '@/domain/entities/Article'
 
 export const CATEGORY_LABELS: Record<ArticleCategory, string> = {
@@ -17,13 +18,38 @@ interface Props {
 }
 
 export function CategoryFilter({ active }: Props) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const handleClick = (category?: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+
+    if (category) {
+      params.set('category', category)
+    } else {
+      params.delete('category')
+    }
+
+    // Navigate WITHOUT hash
+    router.push(`${pathname}?${params.toString()}`)
+
+    // Scroll AFTER render
+    setTimeout(() => {
+      const el = document.getElementById('articles')
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 100)
+  }
+
   return (
     <div className="w-full overflow-x-auto no-scrollbar">
       <div className="flex gap-2 min-w-max pb-1">
-        
+
         {/* All */}
-        <Link
-          href="/#articles"
+        <button
+          onClick={() => handleClick()}
           className={`whitespace-nowrap text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border transition-colors ${
             !active
               ? 'bg-saffron-50 border-saffron-300 text-saffron-700'
@@ -31,14 +57,14 @@ export function CategoryFilter({ active }: Props) {
           }`}
         >
           All
-        </Link>
+        </button>
 
         {/* Categories */}
         {(Object.entries(CATEGORY_LABELS) as [ArticleCategory, string][]).map(
           ([value, label]) => (
-            <Link
+            <button
               key={value}
-              href={`/?category=${value}#articles`}
+              onClick={() => handleClick(value)}
               className={`whitespace-nowrap text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border transition-colors ${
                 active === value
                   ? 'bg-saffron-50 border-saffron-300 text-saffron-700'
@@ -46,7 +72,7 @@ export function CategoryFilter({ active }: Props) {
               }`}
             >
               {label}
-            </Link>
+            </button>
           )
         )}
       </div>

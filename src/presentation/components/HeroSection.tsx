@@ -86,12 +86,12 @@ export default function HeroSection() {
             transition={{ delay: 0.5 }}
             className="flex items-center gap-4"
           >
-            <a
+            {/* <a
               href="#articles"
               className="px-5 py-2.5 rounded-lg bg-saffron-600 text-white text-sm font-medium hover:bg-saffron-700 transition"
             >
               Start Exploring
-            </a>
+            </a> */}
 
             {/* <a
               href="#"
