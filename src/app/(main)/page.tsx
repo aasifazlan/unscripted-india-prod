@@ -2,6 +2,7 @@ import { listArticles } from '@/infrastructure/container'
 import { ArticleCard } from '@/presentation/components/ArticleCard'
 import { CategoryFilter } from '@/presentation/components/CategoryFilter'
 import  HeroSection  from '@/presentation/components/HeroSection'
+import { LawLibraryCard } from '@/presentation/components/LawLibraryCard'
 
 export const revalidate = 60
 
@@ -25,6 +26,7 @@ export default async function HomePage({
 
       {/* ✅ HERO (only on homepage) */}
       {!category && <HeroSection />}
+      {!category && <LawLibraryCard/>}
 
       {/* ✅ CONTENT START (anchor target) */}
       <div id="content-start" className="scroll-mt-16">
