@@ -13,13 +13,37 @@ export default function ProfilePage() {
     )
   }
 
-  if (!session) {
-    return (
-      <div className="flex items-center justify-center h-full p-10">
-        <p className="text-sm text-gray-500">You are not logged in.</p>
+if (!session) {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+      <div className="bg-white p-8 rounded-2xl shadow-md text-center space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800">
+          👋 You have signed out
+        </h2>
+
+        <p className="text-sm text-gray-500">
+          Please sign in again to access your profile
+        </p>
+
+        <div className="flex justify-center gap-3">
+          <a
+            href="/"
+            className="px-4 py-2 text-sm rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition"
+          >
+            Go to Home
+          </a>
+
+          <a
+            href="/signin"
+            className="px-4 py-2 text-sm rounded-lg border border-gray-300 hover:bg-gray-50 transition"
+          >
+            Sign In
+          </a>
+        </div>
       </div>
-    )
-  }
+    </div>
+  )
+}
 
   const user = session.user as any
 

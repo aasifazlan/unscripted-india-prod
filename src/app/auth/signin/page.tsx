@@ -5,17 +5,37 @@ import { signIn, useSession } from 'next-auth/react'
 export default function SignInPage() {
   const { data: session } = useSession()
 
-  if (session) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="bg-white p-6 rounded-2xl shadow-md">
-          <p className="text-lg font-medium">
-            Logged in as {session.user?.email}
-          </p>
+if (session) {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+      <div className="bg-white p-8 rounded-2xl shadow-md text-center space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800">
+          ✅ Signed in successfully
+        </h2>
+
+        <p className="text-sm text-gray-500">
+          Welcome back, {session.user?.name || session.user?.email}
+        </p>
+
+        <div className="flex justify-center gap-3">
+          <a
+            href="/"
+            className="px-4 py-2 text-sm rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition"
+          >
+            Go to Home
+          </a>
+
+          <a
+            href="/profile"
+            className="px-4 py-2 text-sm rounded-lg border border-gray-300 hover:bg-gray-50 transition"
+          >
+            Go to Profile
+          </a>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
+}
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4">
