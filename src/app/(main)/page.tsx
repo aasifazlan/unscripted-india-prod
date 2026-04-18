@@ -26,7 +26,11 @@ export default async function HomePage({
 
       {/* ✅ HERO (only on homepage) */}
       {!category && <HeroSection />}
-      {!category && <LawLibraryCard/>}
+      {!category && (
+      <div className="mb-6">
+        <LawLibraryCard />
+      </div>
+      )}
 
       {/* ✅ CONTENT START (anchor target) */}
       <div id="content-start" className="scroll-mt-16">

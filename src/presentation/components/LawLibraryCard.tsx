@@ -1,116 +1,101 @@
 import Link from "next/link";
 
-const TAGS = [
-  "Transparency",
-  "Data Privacy",
-  "Citizens Rights",
-  "Governance",
-  "Technology",
-];
-
 export function LawLibraryCard() {
   return (
-    <Link
-      href="https://laws.unscriptedindia.org"
-      rel="noopener noreferrer"
-      className="group bg-white rounded-xl border border-gray-100 p-4 sm:p-5 hover:border-gray-200 transition-colors flex flex-col"
-    >
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-          Law Library
-        </span>
+    <section className="mb-12">
+      <Link
+        href="https://laws.unscriptedindia.org"
+        rel="noopener noreferrer"
+        className="group block w-full rounded-3xl overflow-hidden border border-gray-200 hover:-translate-y-1 transition-transform duration-200"
+      >
+        {/* Header */}
+        <div className="relative bg-gradient-to-br from-[#1a0e00] via-[#3b1f00] to-[#5c2e00] p-6 md:p-8 overflow-hidden">
+          
+          {/* Grid texture */}
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 28px, white 28px, white 29px),
+                                repeating-linear-gradient(90deg, transparent, transparent 28px, white 28px, white 29px)`,
+            }}
+          />
 
-        <div className="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center shrink-0">
-          <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
-            <rect
-              x="8"
-              y="6"
-              width="24"
-              height="28"
-              rx="3"
-              stroke="#B45309"
-              strokeWidth="1.5"
-            />
-            <line
-              x1="13"
-              y1="14"
-              x2="27"
-              y2="14"
-              stroke="#B45309"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <line
-              x1="13"
-              y1="19"
-              x2="27"
-              y2="19"
-              stroke="#B45309"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <line
-              x1="13"
-              y1="24"
-              x2="21"
-              y2="24"
-              stroke="#B45309"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+          <div className="relative z-10 max-w-3xl">
+            
+            {/* Badge */}
+            <span className="inline-flex items-center gap-1.5 bg-amber-400/15 border border-amber-400/30 rounded-full px-3 py-1 text-[10px] font-medium tracking-widest uppercase text-amber-300 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              Law Library
+            </span>
+
+            {/* Title */}
+            <h3
+              className="text-2xl md:text-4xl font-semibold text-white leading-tight tracking-tight"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Indian <span className="text-amber-300">Law</span> Library
+            </h3>
+
+            <p className="mt-3 text-sm md:text-base text-white/60 max-w-xl">
+              Structured legal knowledge for every citizen — from simplified explanations
+              to deep legal insights.
+            </p>
+          </div>
+
+          {/* Seal */}
+          <div className="absolute right-6 bottom-6 w-12 h-12 md:w-14 md:h-14 rounded-full bg-amber-400 border-[3px] border-[#1a0e00] flex items-center justify-center">
+            <svg width="24" height="24" viewBox="0 0 40 40" fill="none">
+              <rect x="8" y="6" width="24" height="28" rx="3" stroke="#1a0e00" strokeWidth="2" />
+              <line x1="13" y1="14" x2="27" y2="14" stroke="#1a0e00" strokeWidth="2" strokeLinecap="round" />
+              <line x1="13" y1="19" x2="27" y2="19" stroke="#1a0e00" strokeWidth="2" strokeLinecap="round" />
+              <line x1="13" y1="24" x2="21" y2="24" stroke="#1a0e00" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </div>
         </div>
-      </div>
 
-      {/* Title */}
-      <h3 className="mt-3 text-sm sm:text-base font-semibold text-gray-900 leading-snug">
-        Indian Law Library
-      </h3>
+        {/* Body */}
+        <div className="bg-white p-6 md:p-8">
+          
+          {/* Stats */}
+          <div className="flex divide-x divide-gray-100 border border-gray-100 rounded-xl overflow-hidden mb-6">
+            {[
+              { num: "50+", label: "Laws" },
+              { num: "3", label: "Categories" },
+              { num: "7", label: "Topics" },
+            ].map(({ num, label }) => (
+              <div key={label} className="flex-1 py-3 text-center">
+                <p
+                  className="text-xl font-semibold text-amber-700"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  {num}
+                </p>
+                <p className="mt-1 text-xs text-gray-400 uppercase tracking-wider">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
 
-      {/* Description */}
-      <p className="mt-1.5 text-xs sm:text-sm text-gray-500 leading-relaxed line-clamp-2">
-        Plain-language summaries to technical legal analysis — structured and
-        interactive legal knowledge for everyone.
-      </p>
+          {/* Description */}
+          <p className="text-sm text-gray-600 leading-relaxed max-w-2xl">
+            From plain-language summaries to technical legal analysis — structured,
+            interactive legal knowledge built for everyone.
+          </p>
+        </div>
 
-      {/* Stats */}
-      <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-400">
-        <span>
-          <span className="font-medium text-gray-700">50+</span> Laws
-        </span>
-        <span className="w-px h-3 bg-gray-200" />
-        <span>
-          <span className="font-medium text-gray-700">3</span> Categories
-        </span>
-        <span className="w-px h-3 bg-gray-200" />
-        <span>
-          <span className="font-medium text-gray-700">7</span> Topics
-        </span>
-      </div>
-
-      {/* Tags */}
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {TAGS.map((tag) => (
-          <span
-            key={tag}
-            className="text-[10px] font-medium text-gray-500 bg-gray-50 border border-gray-100 rounded-md px-2 py-0.5"
-          >
-            #{tag}
+        {/* Footer */}
+        <div className="bg-white border-t border-gray-100 px-6 md:px-8 py-4 flex items-center justify-between">
+          <span className="text-xs text-gray-400 font-mono truncate">
+            laws.unscriptedindia.org
           </span>
-        ))}
-      </div>
 
-      {/* Footer */}
-      <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-        <span className="text-[11px] text-gray-400">
-          laws.unscriptedindia.org
-        </span>
-
-        <span className="text-xs font-medium text-amber-700 group-hover:translate-x-0.5 transition-transform">
-          Explore →
-        </span>
-      </div>
-    </Link>
+          <span className="flex items-center gap-1 text-sm font-medium text-amber-800 bg-amber-50 border border-amber-200 rounded-md px-3 py-1.5 group-hover:bg-amber-100 transition-colors">
+            Explore
+            <span className="group-hover:translate-x-0.5 transition-transform inline-block">→</span>
+          </span>
+        </div>
+      </Link>
+    </section>
   );
 }
