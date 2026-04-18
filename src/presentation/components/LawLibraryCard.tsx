@@ -43,7 +43,7 @@ export function LawLibraryCard() {
           </div>
 
           {/* Seal */}
-          <div className="absolute right-6 bottom-6 w-12 h-12 md:w-14 md:h-14 rounded-full bg-amber-400 border-[3px] border-[#1a0e00] flex items-center justify-center">
+          <div className="absolute right-6 bottom-32 w-12 h-12 md:w-14 md:h-14 rounded-full bg-amber-400 border-[3px] border-[#1a0e00] flex items-center justify-center">
             <svg width="24" height="24" viewBox="0 0 40 40" fill="none">
               <rect x="8" y="6" width="24" height="28" rx="3" stroke="#1a0e00" strokeWidth="2" />
               <line x1="13" y1="14" x2="27" y2="14" stroke="#1a0e00" strokeWidth="2" strokeLinecap="round" />
